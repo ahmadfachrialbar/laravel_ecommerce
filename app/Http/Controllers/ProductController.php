@@ -20,7 +20,7 @@ class ProductController extends Controller
         return view('products.index', compact('products', 'categories', 'categoryActive'));
     }
 
-    // Menampilkan produk berdasarkan kategori
+    // produk berdasarkan kategori
     public function byCategory($slug)
     {
         $categoryActive = Category::where('slug', $slug)->firstOrFail();
@@ -31,7 +31,6 @@ class ProductController extends Controller
             ->latest()
             ->paginate(12);
 
-        // Pastikan dikirim ke view yang sama
         return view('products.index', compact('products', 'categories', 'categoryActive'));
     }
 
@@ -45,13 +44,9 @@ class ProductController extends Controller
             ->limit(4)
             ->get();
 
-        return view('products.show', compact('product', 'relatedProducts'));
-    }
+        $products = Product::latest()->take(8)->get();
+        $categories = Category::all();
 
-    // tampilan di home
-    public function home()
-    {
-        $products = Product::with('category')->latest()->take(8)->get();
-        return view('homepage.layouts.app', compact('products'));
+        return view('products.show', compact('product', 'relatedProducts', 'products', 'categories'));
     }
 }

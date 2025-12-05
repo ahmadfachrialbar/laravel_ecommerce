@@ -1,36 +1,47 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CategoriesController;
-use App\Http\Controllers\HomeController; 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CheckoutController;
 
-// Route untuk homepage
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// Route untuk produk
+// Products
 Route::get('/product', [ProductController::class, 'index'])->name('products.index');
 Route::get('/product/{slug}', [ProductController::class, 'show'])->name('products.show');
-
-// Route untuk filter by category produk
 Route::get('/product/category/{slug}', [ProductController::class, 'byCategory'])->name('products.byCategory');
 
-
-
-
-Route::get('/profile', function () {
-    return view('profile.index');
-});
-
-Route::get('/cart', function () {
-    return view('cart.index');
-});
-
-
-Route::get('/checkout', function () {
-    return view('checkout.index');
-});
-
-
+// Categories
 Route::get('/categories', [CategoriesController::class, 'index'])->name('categories.index');
 Route::get('/category/{slug}', [CategoriesController::class, 'show'])->name('categories.show');
+
+// Cart
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/add/{id}', [CartController::class, 'addToCart'])->name('cart.add');
+Route::match(['put', 'post'], '/cart/update/{id}', [CartController::class, 'updateQuantity'])->name('cart.update');
+Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+
+// Checkout
+Route::get('/checkout', function () {
+    return view('checkout.index');
+})->middleware('auth')->name('checkout');
+
+// Auth
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.process');
+
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register'])->name('register.process');
+
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+
+// Checkout
+Route::middleware('auth')->group(function () {
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+});

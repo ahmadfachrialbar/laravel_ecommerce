@@ -15,7 +15,15 @@ class CategoryForm
                 TextInput::make('name')
                     ->label('Nama Kategori')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        $set('slug', \Illuminate\Support\Str::slug($state));
+                    }),
+                TextInput::make('slug')
+                    ->label('slug otomatis')
+                    ->required()
+                    ->disabled()
+                    ->dehydrated(),
 
                 FileUpload::make('image')
                     ->label('Gambar')

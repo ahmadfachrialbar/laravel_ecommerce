@@ -67,32 +67,69 @@
 </head>
 
 <body class="bg-white text-gray-900 antialiased">
+  @php
+  $products = $products ?? collect();
+  $categories = $categories ?? collect();
+  @endphp
+
   <!-- Navbar -->
   @include('homepage.layouts.navbar')
 
   <!-- Hero Section -->
-  <section class="pt-16">
-    <div class="relative h-[85vh] bg-gray-100">
-      <img
-        src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1600"
-        alt="Hero"
-        class="w-full h-full object-cover" />
-      <div class="absolute inset-0 bg-black/10"></div>
-      <div class="absolute inset-0 flex items-center justify-center">
-        <div class="text-center text-white px-6">
-          <p class="text-sm tracking-widest mb-4 font-light">KOLEKSI 2024</p>
-          <h1 class="text-5xl md:text-7xl font-light mb-8 tracking-tight">
-            Gaya Minimalis
+  <section class="pt-16 relative">
+    <!-- Main Hero Container -->
+    <div class="relative h-[90vh] bg-gray-900">
+      <!-- Hero Image -->
+      <div class="absolute inset-0">
+        <img
+            src="{{ Storage::url('hero/hero.jpeg') }}"
+          alt="Hero Fashion"
+          class="w-full h-full object-cover" />
+        
+        <!-- Simple Gradient Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60"></div>
+      </div>
+
+      <!-- Content Container - Centered -->
+      <div class="relative h-full flex items-center justify-center">
+        <div class="text-center px-6 max-w-3xl mx-auto">
+          
+          <!-- Small Badge -->
+          <div class="flex items-center justify-center space-x-2 mb-6">
+            <div class="h-px w-12 bg-white/60"></div>
+            <span class="text-xs tracking-[0.25em] text-white/90 font-light uppercase">Koleksi Terbaik</span>
+            <div class="h-px w-12 bg-white/60"></div>
+          </div>
+
+          <!-- Main Heading -->
+          <h1 class="text-5xl md:text-7xl font-light text-white leading-tight tracking-tight mb-6">
+            Y-Beutik
           </h1>
-          <a href="/product"
-            class="bg-white text-gray-900 px-8 py-3 text-sm tracking-wide hover:bg-gray-100 transition">
-            JELAJAHI
+          
+          <!-- Description -->
+          <p class="text-lg text-white/80 font-light leading-relaxed mb-10 max-w-2xl mx-auto">
+            Temukan koleksi fashion yang menggabungkan elegance dan kenyamanan untuk gaya hidup modern.
+          </p>
+
+          <!-- CTA Button -->
+          <a href="/product" 
+             class="inline-flex items-center justify-center px-8 py-4 bg-white text-gray-900 rounded-xl font-medium text-sm hover:bg-gray-100 transition-colors">
+            <span>Jelajahi Koleksi</span>
           </a>
         </div>
       </div>
-    </div>
-  </section>
 
+      <!-- Simple Scroll Indicator -->
+      <div class="absolute bottom-8 left-1/2 -translate-x-1/2">
+        <div class="flex flex-col items-center space-y-2 text-white/60">
+          <span class="text-xs uppercase tracking-wider">Scroll</span>
+          <svg class="w-5 h-5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+</section>
 
   <!-- Categories Section -->
   <section id="categories" class="max-w-7xl mx-auto px-6 lg:px-8 py-20">
@@ -246,11 +283,11 @@
   <!-- Footer -->
   @include('homepage.layouts.footer')
 
-  <script>
-    document.getElementById("menuBtn").addEventListener("click", function() {
-      document.getElementById("mobileMenu").classList.toggle("hidden");
-    });
-  </script>
 </body>
+<script>
+  document.getElementById("menuBtn").addEventListener("click", function() {
+    document.getElementById("mobileMenu").classList.toggle("hidden");
+  });
+</script>
 
 </html>

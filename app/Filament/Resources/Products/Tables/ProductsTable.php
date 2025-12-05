@@ -13,7 +13,7 @@ use Filament\Tables\Columns\ImageColumn;
 
 class ProductsTable
 {
-    protected static ?string $navigationGroup = 'Manajemen Produk';
+    
     public static function configure(Table $table): Table
     {
         return $table

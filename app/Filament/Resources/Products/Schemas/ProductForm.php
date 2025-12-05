@@ -8,9 +8,11 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\FileUpload;
 use App\Models\Category;
+use Filament\Forms\Components\TagsInput;
 
 class ProductForm
 {
+
     public static function configure(Schema $schema): Schema
     {
         return $schema
@@ -19,17 +21,15 @@ class ProductForm
                     ->label('Kategori')
                     ->relationship('category', 'name')
                     ->required(),
-                
+
                 TextInput::make('name')
                     ->required()
                     ->maxLength(255)
-                    ->reactive()
-                    ->afterStateUpdated(fn ($state, $set) => $set('slug', \Str::slug($state))),
-
+                    ->reactive(),
+        
                 TextInput::make('slug')
                     ->required()
-                    ->maxLength(255)
-                    ->unique(ignoreRecord: true),
+                    ->maxLength(255),
 
                 Textarea::make('description')
                     ->rows(4),
@@ -42,11 +42,13 @@ class ProductForm
                     ->numeric()
                     ->required(),
 
-                Textarea::make('size')
-                    ->rows(2),
+                TagsInput::make('size')
+                    ->label('Size Tersedia')
+                    ->placeholder('Tambahkan size...'),
 
-                Textarea::make('color')
-                    ->rows(2),
+                TagsInput::make('color')
+                    ->label('Color Tersedia')
+                    ->placeholder('Tambahkan color...'),
 
                 FileUpload::make('main_image')
                     ->label('Gambar Utama')

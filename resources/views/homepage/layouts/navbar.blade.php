@@ -8,7 +8,7 @@
       <!-- Desktop Menu -->
       <div class="hidden md:flex items-center space-x-8">
         <a
-          href="/"
+          href="/#hero"
           class="nav-link text-sm text-gray-700 hover:text-gray-900">Beranda</a>
         <a
           href="/#categories"
@@ -38,7 +38,7 @@
             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
           </svg>
         </a>
-        <a href="/cart" class=":block text-gray-700 hover:text-gray-900">
+        <a href="{{ route('cart.index') }}" class=":block text-gray-700 hover:text-gray-900">
           <svg
             class="w-5 h-5"
             fill="none"

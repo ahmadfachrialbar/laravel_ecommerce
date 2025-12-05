@@ -36,7 +36,7 @@
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12">
             @foreach($products as $product)
             <div class="group">
-                <a href="{{ route('products.show', ['slug' => $product->slug]) }}" class="block relative overflow-hidden bg-gray-50 aspect-[3/4] mb-4">
+                <a href="{{ route('products.show', ['slug' => $product->slug]) }}" class="block relative overflow-hidden bg-gray-50 rounded-xl aspect-[3/4] mb-4">
                     <img src="{{ $product->main_image ? Storage::url($product->main_image) : 'https://via.placeholder.com/500x600?text=No+Image' }}"
                         alt="{{ $product->name }}"
                         class="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
