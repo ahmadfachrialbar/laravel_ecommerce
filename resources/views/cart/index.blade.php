@@ -27,7 +27,6 @@
                         </p>
 
                         {{-- Jika nanti ada size/color tinggal aktifkan --}}
-                        {{-- <p class="text-xs text-gray-500 mb-3">Size: L</p> --}}
 
                         <div class="flex items-center gap-6">
 
@@ -103,7 +102,7 @@
 
             <div class="flex justify-between text-sm mb-2">
                 <span>Ongkir</span>
-                <span>Rp {{ number_format($shipping, 0, ',', '.') }}</span>
+                <span class="text-red-500">Belum dihitung</span>
             </div>
 
             <div class="border-t border-gray-200 my-4"></div>

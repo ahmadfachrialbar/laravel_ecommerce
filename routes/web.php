@@ -7,41 +7,50 @@ use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\ProfileController;
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+// ==============================
+// FRONTEND (Customer Only)
+// ==============================
+Route::middleware(\App\Http\Middleware\CustomerOnly::class)->group(function () {
 
-// Products
-Route::get('/product', [ProductController::class, 'index'])->name('products.index');
-Route::get('/product/{slug}', [ProductController::class, 'show'])->name('products.show');
-Route::get('/product/category/{slug}', [ProductController::class, 'byCategory'])->name('products.byCategory');
+    // Home
+    Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// Categories
-Route::get('/categories', [CategoriesController::class, 'index'])->name('categories.index');
-Route::get('/category/{slug}', [CategoriesController::class, 'show'])->name('categories.show');
+    // Products
+    Route::get('/product', [ProductController::class, 'index'])->name('products.index');
+    Route::get('/product/{slug}', [ProductController::class, 'show'])->name('products.show');
+    Route::get('/product/category/{slug}', [ProductController::class, 'byCategory'])->name('products.byCategory');
 
-// Cart
-Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-Route::post('/cart/add/{id}', [CartController::class, 'addToCart'])->name('cart.add');
-Route::match(['put', 'post'], '/cart/update/{id}', [CartController::class, 'updateQuantity'])->name('cart.update');
-Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+    // Categories
+    Route::get('/categories', [CategoriesController::class, 'index'])->name('categories.index');
+    Route::get('/category/{slug}', [CategoriesController::class, 'show'])->name('categories.show');
 
-// Checkout
-Route::get('/checkout', function () {
-    return view('checkout.index');
-})->middleware('auth')->name('checkout');
+    // Cart
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/add/{id}', [CartController::class, 'addToCart'])->name('cart.add');
+    Route::match(['put', 'post'], '/cart/update/{id}', [CartController::class, 'updateQuantity'])->name('cart.update');
+    Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
 
-// Auth
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login.process');
+    // Checkout
+    Route::middleware('auth')->group(function () {
+        Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+        Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+    });
 
-Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-Route::post('/register', [AuthController::class, 'register'])->name('register.process');
+    // Auth (login/register user)
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login', [AuthController::class, 'login'])->name('login.process');
 
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+    Route::post('/register', [AuthController::class, 'register'])->name('register.process');
 
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Checkout
-Route::middleware('auth')->group(function () {
-    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
-    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+    // Profile
+    Route::middleware('auth')->group(function () {
+        Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+        Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+    });
 });

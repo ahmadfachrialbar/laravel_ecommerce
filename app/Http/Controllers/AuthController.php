@@ -44,6 +44,16 @@ class AuthController extends Controller
             'email'    => 'required|email',
             'password' => 'required'
         ]);
+        
+        if (Auth::attempt($credentials)) {
+            if (auth()->user()->role === 'admin') {
+                return redirect()->route('filament.admin.pages.dashboard');
+            } else {
+                return redirect('/');
+            }
+        }
+
+        return back()->withErrors(['email' => 'Email atau password salah.']);
 
         if (Auth::attempt($credentials, $request->remember)) {
 
@@ -74,9 +84,12 @@ class AuthController extends Controller
         return back()->withErrors(['email' => 'Email atau password salah.']);
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
         Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
         return redirect('/');
     }
 }

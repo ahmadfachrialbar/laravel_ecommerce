@@ -6,24 +6,38 @@
         <div class="flex flex-col md:flex-row items-start md:items-center gap-6">
 
             <!-- Avatar -->
+            @php
+            $initial = strtoupper(substr($user->name, 0, 2));
+            @endphp
             <div class="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center text-2xl font-light text-gray-600">
-                AS
+                {{ $initial }}
             </div>
 
             <!-- User Info -->
             <div class="flex-1">
-                <h1 class="text-2xl font-light tracking-tight mb-1">Ahmad Santoso</h1>
-                <p class="text-sm text-gray-500">ahmad.santoso@email.com</p>
+                <h1 class="text-2xl font-light tracking-tight mb-1">{{ $user->name }}</h1>
+                <p class="text-sm text-gray-500">{{ $user->email }}</p>
             </div>
 
-            <!-- Edit Button -->
-            <button class="text-sm text-gray-700 hover:text-gray-900 border border-gray-200 px-6 py-2 hover:border-gray-400 transition">
-                Edit Profile
-            </button>
+            <!-- Button Group -->
+            <div class="flex gap-3">
+                <a href="{{ route('profile.edit') }}"
+                    class="text-sm text-gray-700 hover:text-gray-900 border border-gray-200 px-6 py-2 hover:border-gray-400 transition">
+                    Edit Profil
+                </a>
+
+
+                <!-- LOGOUT BUTTON -->
+                <button onclick="openLogoutModal()"
+                    class="text-sm bg-red-500 text-white px-6 py-2 hover:bg-red-600 transition">
+                    Logout
+                </button>
+            </div>
 
         </div>
     </div>
 </section>
+
 
 <!-- TABS -->
 <section class="border-b border-gray-100 sticky top-16 bg-white z-40">
@@ -56,130 +70,67 @@
                     <!-- Nama -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-sm text-gray-600 mb-1">Nama Depan</label>
-                            <p class="text-sm text-gray-900 py-2 border-b border-gray-200">
-                                Ahmad
-                            </p>
+                            <label class="block text-sm text-gray-600 mb-1">Nama Lengkap</label>
+                            <p class="text-sm text-gray-900 py-2 border-b border-gray-200">{{ $user->name }}</p>
                         </div>
                         <div>
-                            <label class="block text-sm text-gray-600 mb-1">Nama Belakang</label>
-                            <p class="text-sm text-gray-900 py-2 border-b border-gray-200">
-                                Santoso
-                            </p>
+                            <label class="block text-sm text-gray-600 mb-1">Role</label>
+                            <p class="text-sm text-gray-900 py-2 border-b border-gray-200">{{ $user->role }}</p>
                         </div>
                     </div>
 
                     <!-- Email -->
                     <div>
                         <label class="block text-sm text-gray-600 mb-1">Email</label>
-                        <p class="text-sm text-gray-900 py-2 border-b border-gray-200">
-                            ahmad.santoso@email.com
-                        </p>
+                        <p class="text-sm text-gray-900 py-2 border-b border-gray-200">{{ $user->email }}</p>
                     </div>
 
                     <!-- Telepon -->
                     <div>
                         <label class="block text-sm text-gray-600 mb-1">Nomor Telepon</label>
                         <p class="text-sm text-gray-900 py-2 border-b border-gray-200">
-                            0812-3456-7890
+                            {{ $user->phone ?? '-' }}
                         </p>
-                    </div>
-
-                    <!-- Alamat -->
-                    <div>
-                        <label class="block text-sm text-gray-600 mb-1">Alamat</label>
-                        <p class="text-sm text-gray-900 py-3 border border-gray-200 bg-gray-50">
-                            Jl. Sudirman No. 123, Purwokerto, Jawa Tengah 53116
-                        </p>
-                    </div>
-
-                    <!-- Button Edit -->
-                    <div class="pt-4">
-                        <button class="border border-gray-300 px-8 py-3 text-sm hover:border-gray-500 transition">
-                            Edit Profil
-                        </button>
                     </div>
 
                 </div>
             </div>
         </div>
-
 
         <!-- ORDER HISTORY -->
-        <div id="content-orders" class="tab-content hidden">
-            <h2 class="text-xl font-light mb-8">Histori Pembelian</h2>
 
-            <div class="space-y-4">
+    </div>
 
-                <!-- Order Item -->
-                <div class="border border-gray-200 p-6 hover:border-gray-300 transition">
+    <!-- LOGOUT CONFIRMATION MODAL -->
+    <div id="logoutModal"
+        class="fixed inset-0 bg-black/50 hidden flex items-center justify-center z-50">
+        <div class="bg-white w-80 rounded-lg shadow-lg p-6 text-center">
 
-                    <!-- Header -->
-                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
-                        <div>
-                            <p class="text-sm text-gray-500 mb-1">Order #ORD-2024-001</p>
-                            <p class="text-sm font-medium">15 November 2024</p>
-                        </div>
+            <h2 class="text-lg font-medium mb-4">Yakin ingin keluar?</h2>
+            <p class="text-sm text-gray-600 mb-6">Kamu akan logout dari akun ini.</p>
 
-                        <div class="flex items-center gap-4">
-                            <span class="text-sm px-3 py-1 bg-green-50 text-green-700 border border-green-200">Selesai</span>
-                            <p class="text-sm font-medium">Rp 450.000</p>
-                        </div>
-                    </div>
-
-                    <!-- Product List -->
-                    <div class="border-t border-gray-100 pt-4 space-y-3">
-
-                        <div class="flex gap-4">
-                            <div class="w-16 h-16 bg-gray-100 flex-shrink-0">
-                                <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=200"
-                                    class="w-full h-full object-cover">
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-sm font-medium mb-1">Polo Shirt Premium Navy</p>
-                                <p class="text-xs text-gray-500">Size: L · Qty: 2</p>
-                            </div>
-                        </div>
-
-                        <div class="flex gap-4">
-                            <div class="w-16 h-16 bg-gray-100 flex-shrink-0">
-                                <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=200"
-                                    class="w-full h-full object-cover">
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-sm font-medium mb-1">Track Jacket Blue Stripe</p>
-                                <p class="text-xs text-gray-500">Size: M · Qty: 1</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Actions -->
-                    <div class="mt-4 pt-4 border-t border-gray-100 flex gap-3">
-                        <button class="flex-1 text-sm border border-gray-200 py-2 hover:border-gray-400 transition">
-                            Lihat Detail
-                        </button>
-                        <button class="flex-1 text-sm bg-gray-900 text-white py-2 hover:bg-gray-800 transition">
-                            Beli Lagi
-                        </button>
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="mt-8 text-center">
-                <button class="text-sm text-gray-600 hover:text-gray-900 border border-gray-200 px-8 py-3 hover:border-gray-400 transition">
-                    Muat Lebih Banyak
+            <div class="flex gap-3">
+                <button onclick="closeLogoutModal()"
+                    class="flex-1 py-2 border border-gray-300 hover:bg-gray-100 transition text-sm">
+                    Batal
                 </button>
+
+                <form action="{{ route('logout') }}" method="POST" class="flex-1">
+                    @csrf
+                    <button class="w-full py-2 bg-red-600 text-white hover:bg-red-700 transition text-sm">
+                        Logout
+                    </button>
+                </form>
             </div>
 
         </div>
-
     </div>
+
 </section>
 
-<!-- SCRIPT TAB -->
+<!-- SCRIPT TAB & LOGOUT MODAL -->
 <script>
+    // Fungsi TAB
     function showTab(tab) {
         document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
         document.getElementById('content-' + tab).classList.remove('hidden');
@@ -191,6 +142,15 @@
 
         document.getElementById('tab-' + tab).classList.add('border-gray-900');
         document.getElementById('tab-' + tab).classList.remove('text-gray-500');
+    }
+
+    // Fungsi Modal Logout — DIPISAH dari showTab!
+    function openLogoutModal() {
+        document.getElementById('logoutModal').classList.remove('hidden');
+    }
+
+    function closeLogoutModal() {
+        document.getElementById('logoutModal').classList.add('hidden');
     }
 </script>
 

@@ -7,7 +7,7 @@
             Buat Akun Baru
         </h2>
         <p class="text-gray-600 font-light">
-            Bergabunglah dengan Y-Beutik hari ini
+            Bergabunglah dengan Fashion Icon Purwokerto
         </p>
     </div>
 
@@ -24,7 +24,7 @@
                    required
                    value="{{ old('name') }}"
                    class="input-field w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all text-gray-900"
-                   placeholder="John Doe" />
+                   placeholder="Pelanggan Setia" />
             @error('name')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
             @enderror
@@ -40,7 +40,7 @@
                    required
                    value="{{ old('email') }}"
                    class="input-field w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all text-gray-900"
-                   placeholder="nama@email.com" />
+                   placeholder="pelanggan@email.com" />
             @error('email')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
             @enderror
@@ -56,7 +56,7 @@
                    required
                    value="{{ old('phone') }}"
                    class="input-field w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all text-gray-900"
-                   placeholder="08123456789" />
+                   placeholder="0858XXXXXXXX" />
             @error('phone')
             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
             @enderror
