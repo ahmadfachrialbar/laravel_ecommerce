@@ -13,15 +13,15 @@ class Cart extends Model
         'user_id',
         'product_id',
         'quantity',
+        'size',
+        'color',
     ];
 
-    // Relasi ke User
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    // Relasi ke Product
     public function product()
     {
         return $this->belongsTo(Product::class);

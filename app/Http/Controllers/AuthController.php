@@ -9,20 +9,29 @@ use App\Models\Cart;
 
 class AuthController extends Controller
 {
+    /**
+     * Tampilkan halaman login
+     */
     public function showLogin()
     {
         return view('auth.login');
     }
 
+    /**
+     * Tampilkan halaman register
+     */
     public function showRegister()
     {
         return view('auth.register');
     }
 
+    /**
+     * Proses register user baru
+     */
     public function register(Request $request)
     {
         $validated = $request->validate([
-            'name'     => 'required',
+            'name'     => 'required|string|max:255',
             'email'    => 'required|email|unique:users',
             'password' => 'required|min:6|confirmed',
         ]);
@@ -35,55 +44,38 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect()->intended('/login');
+        // Merge cart session ke user baru
+        $this->moveSessionCartToDatabase();
+
+        return redirect()->intended('/');
     }
 
+    /**
+     * Proses login
+     */
     public function login(Request $request)
     {
-        $credentials = $request->validate([
+        $request->validate([
             'email'    => 'required|email',
-            'password' => 'required'
+            'password' => 'required',
         ]);
-        
-        if (Auth::attempt($credentials)) {
-            if (auth()->user()->role === 'admin') {
-                return redirect()->route('filament.admin.pages.dashboard');
-            } else {
-                return redirect('/');
-            }
+
+        if (!Auth::attempt($request->only('email', 'password'))) {
+            return back()->withErrors(['email' => 'Email atau password salah']);
         }
 
-        return back()->withErrors(['email' => 'Email atau password salah.']);
+        // Prevent session fixation
+        $request->session()->regenerate();
 
-        if (Auth::attempt($credentials, $request->remember)) {
+        // Merge cart session ke user login
+        $this->moveSessionCartToDatabase();
 
-            // ========= MERGE GUEST CART TO USER CART =========
-            if (session()->has('cart')) {
-                foreach (session('cart') as $productId => $item) {
-                    $existing = Auth::user()
-                        ->carts()
-                        ->where('product_id', $productId)
-                        ->first();
-
-                    if ($existing) {
-                        $existing->quantity += $item['quantity'];
-                        $existing->save();
-                    } else {
-                        Auth::user()->carts()->create([
-                            'product_id' => $productId,
-                            'quantity' => $item['quantity'],
-                        ]);
-                    }
-                }
-                session()->forget('cart');
-            }
-
-            return redirect()->intended('/');
-        }
-
-        return back()->withErrors(['email' => 'Email atau password salah.']);
+        return redirect()->intended('/');
     }
 
+    /**
+     * Logout user
+     */
     public function logout(Request $request)
     {
         Auth::logout();
@@ -91,5 +83,56 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+    /**
+     * Memindahkan cart dari session ke database user login
+     */
+    private function moveSessionCartToDatabase()
+    {
+        if (!session()->has('cart')) {
+            return;
+        }
+
+        $sessionCart = session('cart');
+        if (!is_array($sessionCart) || empty($sessionCart)) {
+            return;
+        }
+
+        $user = Auth::user();
+
+        foreach ($sessionCart as $rowId => $item) {
+            if (!is_array($item) || !isset($item['quantity']) || !isset($item['product_id'])) {
+                continue;
+            }
+
+            $productId = intval($item['product_id']); // Pastikan product_id integer
+            $quantity  = max(1, (int) $item['quantity']);
+            $size      = $item['size'] ?? 'nosize';
+            $color     = $item['color'] ?? 'nocolor';
+
+            // Cek apakah user sudah punya cart ini (product + size + color unik)
+            $existing = Cart::where('user_id', $user->id)
+                ->where('product_id', $productId)
+                ->where('size', $size)
+                ->where('color', $color)
+                ->first();
+
+            if ($existing) {
+                $existing->quantity += $quantity;
+                $existing->save();
+            } else {
+                Cart::create([
+                    'user_id'    => $user->id,
+                    'product_id' => $productId,
+                    'quantity'   => $quantity,
+                    'size'       => $size,
+                    'color'      => $color,
+                ]);
+            }
+        }
+
+        // Hapus session cart setelah migrasi
+        session()->forget('cart');
     }
 }

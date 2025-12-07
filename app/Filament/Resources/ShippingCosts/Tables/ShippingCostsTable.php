@@ -1,43 +1,40 @@
 <?php
 
-namespace App\Filament\Resources\Users\Tables;
+namespace App\Filament\Resources\ShippingCosts\Tables;
 
+use Dom\Text;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 
-class UsersTable
+class ShippingCostsTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label('Nama')
-                    ->searchable()
-                    ->sortable(),
-
-                TextColumn::make('email')
-                    ->label('Email')
-                    ->searchable()
-                    ->sortable(),
-
-                TextColumn::make('phone')
-                    ->label('Telepon')
                     ->searchable(),
-
-                TextColumn::make('role')
-                    ->label('Peran')
+                TextColumn::make('price')
+                    ->money('idr')
                     ->sortable(),
-
+                TextColumn::make('description')
+                    ->limit(50),
                 TextColumn::make('created_at')
-                    ->label('Dibuat')
-                    ->dateTime('d M Y'),
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([])
+            ->filters([
+                
+            ])
             ->recordActions([
                 EditAction::make(),
                 DeleteAction::make(),

@@ -143,40 +143,29 @@
                             <h2 class="text-lg font-medium mb-6">Metode Pengiriman</h2>
 
                             <div class="space-y-3">
+                                @foreach($shippingCosts as $cost)
                                 <label class="flex items-center justify-between p-4 border border-gray-200 cursor-pointer hover:border-gray-400 transition">
                                     <div class="flex items-center gap-3">
-                                        <input type="radio" name="shipping" value="reguler" checked class="w-4 h-4" />
-                                        <div>
-                                            <p class="text-sm font-medium">Reguler (3-5 hari)</p>
-                                            <p class="text-xs text-gray-500">Estimasi tiba: 8-10 Des 2024</p>
-                                        </div>
-                                    </div>
-                                    <span class="text-sm font-medium">Rp 15.000</span>
-                                </label>
+                                        <input type="radio"
+                                            name="shipping_id"
+                                            value="{{ $cost->id }}"
+                                            class="w-4 h-4"
+                                            {{ old('shipping_id') == $cost->id ? 'checked' : '' }} />
 
-                                <label class="flex items-center justify-between p-4 border border-gray-200 cursor-pointer hover:border-gray-400 transition">
-                                    <div class="flex items-center gap-3">
-                                        <input type="radio" name="shipping" value="express" class="w-4 h-4" />
                                         <div>
-                                            <p class="text-sm font-medium">Express (1-2 hari)</p>
-                                            <p class="text-xs text-gray-500">Estimasi tiba: 4-5 Des 2024</p>
+                                            <p class="text-sm font-medium">{{ $cost->name }}</p>
+                                            <p class="text-xs text-gray-500">{{ $cost->description }}</p>
                                         </div>
                                     </div>
-                                    <span class="text-sm font-medium">Rp 35.000</span>
-                                </label>
 
-                                <label class="flex items-center justify-between p-4 border border-gray-200 cursor-pointer hover:border-gray-400 transition">
-                                    <div class="flex items-center gap-3">
-                                        <input type="radio" name="shipping" value="sameday" class="w-4 h-4" />
-                                        <div>
-                                            <p class="text-sm font-medium">Same Day (Hari ini)</p>
-                                            <p class="text-xs text-gray-500">Estimasi tiba: Hari ini sebelum 21:00</p>
-                                        </div>
-                                    </div>
-                                    <span class="text-sm font-medium">Rp 50.000</span>
+                                    <span class="text-sm font-medium">
+                                        Rp {{ number_format($cost->price,0,',','.') }}
+                                    </span>
                                 </label>
+                                @endforeach
                             </div>
                         </div>
+
 
                         <button type="submit" class="w-full bg-gray-900 text-white py-4 text-sm font-medium hover:bg-gray-800 transition mb-3">
                             Buat Pesanan
@@ -199,12 +188,18 @@
                             @forelse($cart as $item)
                             <div class="flex gap-4">
                                 <div class="w-20 h-20 bg-gray-100 flex-shrink-0">
-                                    <img src="{{ $item->product->main_image ? Storage::url($item->product->main_image) : 'https://via.placeholder.com/150' }}" alt="{{ $item->product->name }}" class="w-full h-full object-cover" />
+                                    <img src="{{ $item->product->main_image ? Storage::url($item->product->main_image) : 'https://via.placeholder.com/150' }}"
+                                        class="w-full h-full object-cover">
                                 </div>
+
                                 <div class="flex-1">
                                     <h3 class="text-sm font-medium mb-1">{{ $item->product->name }}</h3>
-                                    <p class="text-xs text-gray-500 mb-2">Size: {{ $item->size }} · Qty: {{ $item->qty }}</p>
-                                    <p class="text-sm font-medium">Rp {{ number_format($item->product->price * $item->qty, 0, ',', '.') }}</p>
+                                    <p class="text-xs text-gray-500 mb-2">
+                                        Uk: {{ $item->size }} · Warna: {{ $item->color }} · Jumlah: {{ $item->quantity }}
+                                    </p>
+                                    <p class="text-sm font-medium">
+                                        Rp {{ number_format($item->product->price,0,',','.') }}
+                                    </p>
                                 </div>
                             </div>
                             @empty
@@ -212,39 +207,42 @@
                             @endforelse
                         </div>
 
-                        <!-- Price Details -->
-                        @php
-                        $shipping_cost = 0;
-                        if(request()->old('shipping') === 'express') $shipping_cost = 35000;
-                        elseif(request()->old('shipping') === 'sameday') $shipping_cost = 50000;
-                        else $shipping_cost = 15000;
 
-                        $total = $subtotal + $shipping_cost;
+                        <!-- Perhitungan Harga -->
+                        @php
+                        $selectedShippingId = old('shipping');
+                        $selectedShipping = $shippingCosts->firstWhere('id', $selectedShippingId);
+                        $shippingCost = $selectedShipping->price ?? 0;
+
+                        $total = $subtotal + $shippingCost;
                         @endphp
+
 
                         <div class="space-y-3 mb-6">
                             <div class="flex justify-between text-sm">
-                                <span class="text-gray-600">Subtotal ({{ $cart->sum('qty') }} item)</span>
-                                <span class="font-medium">Rp {{ number_format($subtotal,0,',','.') }}</span>
+                                <span class="text-gray-600">Subtotal ({{ $total_qty }} item)</span>
+                                <span class="font-medium">
+                                    Rp {{ number_format($subtotal,0,',','.') }}
+                                </span>
                             </div>
+
                             <div class="flex justify-between text-sm">
                                 <span class="text-gray-600">Ongkos Kirim</span>
-                                <span class="font-medium">Rp {{ number_format($shipping_cost,0,',','.') }}</span>
-                            </div>
-                            <div class="flex justify-between text-sm text-green-600">
-                                <span>Diskon</span>
-                                <span>- Rp 0</span>
+                                <span class="text-red-500">Belum dihitung</span>
                             </div>
                         </div>
 
-                        <!-- Total -->
                         <div class="pt-6 border-t border-gray-200 mb-6">
                             <div class="flex justify-between items-center mb-2">
                                 <span class="text-lg font-medium">Total</span>
-                                <span class="text-2xl font-medium">Rp {{ number_format($total,0,',','.') }}</span>
+                                <span class="text-2xl font-medium">
+                                    Rp {{ number_format($total,0,',','.') }}
+                                </span>
                             </div>
                             <p class="text-xs text-gray-500">Sudah termasuk PPN</p>
                         </div>
+
+
                     </div>
                 </div>
 

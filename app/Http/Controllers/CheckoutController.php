@@ -6,113 +6,140 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\Order;
-use App\Models\Order_item;
 use App\Models\Product;
-
+use App\Models\ShippingCost;
+use App\Models\Cart;
+use App\Models\OrderItem;
+use App\Models\User;
 
 class CheckoutController extends Controller
 {
+    // ===============================
+    // TAMPILAN CHECKOUT
+    // ===============================
     public function index(Request $request)
     {
-        // Jika belum login → redirect ke login
         if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Silakan login dulu untuk melanjutkan checkout.');
+            return redirect()->route('login')->with('error', 'Silakan login dulu.');
         }
 
-        // Ambil cart dari database user
-        $cart = Auth::user()->carts()->with('product')->get();
+        $cart = Cart::where('user_id', auth()->id())->with('product')->get();
 
-        if ($cart->count() == 0) {
-            return redirect('/cart')->with('error', 'Keranjangmu kosong.');
+        if ($cart->isEmpty()) {
+            return redirect()->back()->with('error', 'Keranjang belanja masih kosong!');
         }
 
-        // Hitung subtotal + berat
-        $subtotal = 0;
-        $weight   = 0;
+        // Hitung subtotal
+        $subtotal = $cart->sum(function ($item) {
+            return $item->quantity * $item->product->price;
+        });
 
-        foreach ($cart as $item) {
-            $subtotal += $item->product->price * $item->qty;
-            $weight   += $item->product->weight * $item->qty;
-        }
+        // Total barang
+        $total_qty = $cart->sum('quantity');
 
-        return view('checkout.index', compact('cart', 'subtotal', 'weight'));
+        // Ambil semua ongkir
+        $shippingCosts = ShippingCost::all();
+
+        return view('checkout.index', compact('cart', 'subtotal', 'total_qty', 'shippingCosts'));
     }
 
-
+    // ===============================
+    // PROSES & SIMPAN ORDER
+    // ===============================
     public function store(Request $request)
     {
-        // VALIDASI
         $request->validate([
             'first_name' => 'required',
             'last_name'  => 'required',
-            'email'      => 'required',
+            'email'      => 'required|email',
             'phone'      => 'required',
             'address'    => 'required',
             'city'       => 'required',
             'province'   => 'required',
-            'postal_code'=> 'required',
-            'shipping'   => 'required',
-            'payment'    => 'required',
+            'postal_code' => 'required',
+            'shipping_id' => 'required|exists:shipping_costs,id',
         ]);
 
-        // AMBIL CART USER
-        $cart = Auth::user()->carts()->with('product')->get();
+        // Ambil biaya kirim
+        $shipping = ShippingCost::findOrFail($request->shipping_id);
 
-        if ($cart->count() == 0) {
-            return redirect('/cart')->with('error', 'Keranjang kosong.');
+        // Ambil cart user
+        $cart = Cart::with('product')->where('user_id', auth()->id())->get();
+
+        if ($cart->isEmpty()) {
+            return back()->with('error', 'Keranjang kosong.');
         }
 
-        // HITUNG
-        $subtotal = 0;
-        $weight   = 0;
+        // Hitung subtotal
+        $subtotal = $cart->sum(function ($item) {
+            return $item->product->price * $item->quantity;
+        });
 
-        foreach ($cart as $item) {
-            $subtotal += $item->product->price * $item->qty;
-            $weight   += $item->product->weight * $item->qty;
-        }
+        // Total akhir
+        $total = $subtotal + $shipping->price;
 
-        // Ongkir simple (contoh)
-        $shipping_cost = $request->shipping === 'express' ? 35000 :
-                         ($request->shipping === 'sameday' ? 50000 : 15000);
-
-        $total = $subtotal + $shipping_cost;
-
-        // BUAT ORDER
+        // Simpan order
         $order = Order::create([
-            'user_id'       => Auth::id(),
-            'order_number'  => 'INV-' . strtoupper(Str::random(8)),
-            'full_name'     => $request->first_name . ' ' . $request->last_name,
-            'phone'         => $request->phone,
-            'address'       => $request->address,
-            'province_name' => $request->province,
-            'city_name'     => $request->city,
-            'postal_code'   => $request->postal_code,
-            'courier'       => $request->shipping,
-            'weight'        => $weight,
-            'subtotal'      => $subtotal,
-            'shipping_cost' => $shipping_cost,
-            'total'         => $total,
-            'payment_status'=> 'unpaid',
-            'status'        => 'pending',
+            'user_id'          => auth()->id(),
+            'full_name'        => $request->first_name . ' ' . $request->last_name,
+            'email'            => $request->email,
+            'phone'            => $request->phone,
+            'address'          => $request->address,
+            'city'             => $request->city,
+            'province'         => $request->province,
+            'postal_code'      => $request->postal_code,
+            'notes'            => $request->notes,
+            'shipping_costs_id' => $shipping->id,   // ⬅ SESUAI MIGRATION
+            'subtotal'         => $subtotal,
+            'shipping_price'   => $shipping->price,
+            'total'            => $total,
+            'shipping_status'  => 'pending',
+            'status'           => 'pending',
         ]);
 
-        // SIMPAN ORDER ITEMS
+        // Simpan item
         foreach ($cart as $item) {
-            Order_item::create([
+            OrderItem::create([
                 'order_id'  => $order->id,
-                'product_id'=> $item->product_id,
-                'qty'       => $item->qty,
+                'product_id' => $item->product_id,
+                'name'      => $item->product->name,
                 'size'      => $item->size,
                 'color'     => $item->color,
+                'qty'  => $item->quantity,
                 'price'     => $item->product->price,
-                'subtotal'  => $item->product->price * $item->qty,
+                'subtotal'     => $item->product->price * $item->quantity,
             ]);
         }
 
-        // KOSONGKAN CART USER
-        Auth::user()->carts()->delete();
+        // Hapus cart
+        Cart::where('user_id', auth()->id())->delete();
 
-        return redirect()->route('orders.show', $order->id)
-            ->with('success', 'Pesanan berhasil dibuat!');
+        return redirect()->route('checkout.confirm', $order->id);
+    }
+
+    public function confirm($orderId)
+    {
+        $order = Order::findOrFail($orderId);
+
+        $shipping = ShippingCost::find($order->shipping_costs_id);
+
+        $orderItems = OrderItem::with('product')
+            ->where('order_id', $orderId)
+            ->get();
+
+        $subtotal = $order->subtotal;
+        $shippingCost = $shipping->price;
+        $tax = $subtotal * 0.11;
+        $total = $order->total;
+
+        return view('checkout.confirm', compact(
+            'order',
+            'shipping',
+            'orderItems',
+            'subtotal',
+            'shippingCost',
+            'tax',
+            'total'
+        ));
     }
 }

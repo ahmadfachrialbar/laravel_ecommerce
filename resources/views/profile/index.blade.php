@@ -44,7 +44,7 @@
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
         <div class="flex gap-8">
             <button onclick="showTab('account')" id="tab-account"
-                class="py-4 text-sm font-medium border-b-2 border-gray-900 transition">
+                class="py-4 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:text-gray-900 transition">
                 Informasi Akun
             </button>
 
@@ -98,6 +98,31 @@
         </div>
 
         <!-- ORDER HISTORY -->
+        <div id="content-orders" class="tab-content hidden">
+            <div class="space-y-6">
+
+                @forelse($user->orders()->latest()->get() as $order)
+                <div class="bg-white p-6 md:p-8 border border-gray-200 rounded-xl flex justify-between items-center">
+                    <div class="flex-1">
+                        <p class="text-sm text-gray-500">ID Pesanan: <span class="font-medium">#{{ $order->id }}</span></p>
+                        <p class="text-sm text-gray-500">Tanggal: <span class="font-medium">{{ $order->created_at->format('d F Y') }}</span></p>
+                        <p class="text-sm text-gray-500">Total: <span class="font-medium text-green-700">Rp {{ number_format($order->total) }}</span></p>
+                        <p class="text-sm text-gray-500">Status: <span class="font-medium">{{ ucfirst($order->status) }}</span></p>
+                    </div>
+                    <div>
+                        <a href="{{ url('/checkout/confirm/' . $order->id) }}"
+                            class="text-sm bg-gray-900 text-white px-4 py-2 rounded-md hover:bg-gray-800 transition">
+                            Lihat Detail
+                        </a>
+                    </div>
+                </div>
+                @empty
+                <p class="text-gray-500 text-sm">Belum ada histori pembelian.</p>
+                @endforelse
+
+            </div>
+        </div>
+
 
     </div>
 

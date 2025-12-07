@@ -20,7 +20,7 @@ class CategoryResource extends Resource
     protected static ?string $navigationLabel = 'Kategori';
 
     protected static string | BackedEnum | null $navigationIcon = 'heroicon-o-tag';   
-    protected static string | UnitEnum | null $navigationGroup = 'Manajemen Produk';
+    protected static string | UnitEnum | null $navigationGroup = 'Manajemen Toko';
 
     protected static ?string $model = Category::class;
 

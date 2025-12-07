@@ -131,7 +131,7 @@
   </section>
 
   <!-- About Section -->
-  <section class="py-20">
+  <section id="about" class="py-20">
     <div class="max-w-7xl mx-auto px-6 lg:px-12 grid md:grid-cols-2 gap-14 items-center">
 
       <!-- Image -->

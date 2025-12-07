@@ -21,7 +21,7 @@ class CartResource extends Resource
     protected static ?string $navigationLabel = 'Keranjang';
 
     protected static string | BackedEnum | null $navigationIcon = 'heroicon-o-shopping-cart';
-    protected static string | UnitEnum | null $navigationGroup = 'Manajemen Produk';
+    protected static string | UnitEnum | null $navigationGroup = 'Manajemen Toko';
 
     protected static ?string $model = Cart::class;
 

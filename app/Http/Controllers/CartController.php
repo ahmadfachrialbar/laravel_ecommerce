@@ -3,42 +3,63 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
 use App\Models\Cart;
-use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
+    /**
+     * Tambah produk ke cart
+     */
     public function addToCart(Request $request, $id)
     {
-        $product = Product::with('category')->findOrFail($id);
-        $qty = max(1, $request->quantity ?? 1);
+        //dd($request->all());
 
-        // ============ GUEST CART (SESSION) ============
+        $product = Product::with('category')->findOrFail($id);
+
+        $qty   = max(1, (int) $request->quantity);
+        $size  = $request->size ?? 'nosize';
+        $color = $request->color ?? 'nocolor';
+
+        // ==========================
+        // GUEST CART (SESSION)
+        // ==========================
         if (!Auth::check()) {
+
             $cart = session()->get('cart', []);
 
-            if (isset($cart[$id])) {
-                $cart[$id]['quantity'] += $qty;
+            $rowId = $id . '-' . $size . '-' . $color;
+
+            if (isset($cart[$rowId])) {
+                $cart[$rowId]['quantity'] += $qty;
             } else {
-                $cart[$id] = [
-                    'name' => $product->name,
-                    'price' => $product->price,
-                    'image' => $product->main_image,
-                    'category' => $product->category->name ?? 'Uncategorized',
-                    'quantity' => $qty
+                $cart[$rowId] = [
+                    'row_id'     => $rowId,
+                    'product_id' => $id,
+                    'name'       => $product->name,
+                    'price'      => $product->price,
+                    'image'      => $product->main_image,
+                    'category'   => $product->category->name ?? '-',
+                    'quantity'   => $qty,
+                    'size'       => $size,
+                    'color'      => $color,
                 ];
             }
 
             session()->put('cart', $cart);
 
-            return back()->with('info', 'Produk ditambahkan ke keranjang.');
+            return back()->with('success', 'Produk ditambahkan ke keranjang!');
         }
 
-        // ============ USER CART (DATABASE) ============
+        // ==========================
+        // USER LOGIN (DATABASE)
+        // ==========================
         $cart = Cart::firstOrNew([
-            'user_id' => Auth::id(),
+            'user_id'    => Auth::id(),
             'product_id' => $product->id,
+            'size'       => $size,
+            'color'      => $color,
         ]);
 
         $cart->quantity = ($cart->exists ? $cart->quantity : 0) + $qty;
@@ -47,24 +68,46 @@ class CartController extends Controller
         return back()->with('success', 'Produk ditambahkan ke keranjang!');
     }
 
+
+    /**
+     * Tampilkan halaman cart
+     */
     public function index()
     {
+        // USER LOGIN
         if (Auth::check()) {
             $items = Cart::with('product.category')
                 ->where('user_id', Auth::id())
-                ->get();
-        } else {
+                ->get()
+                ->map(function ($cart) {
+                    return (object)[
+                        'row_id'  => $cart->id, // <= ID CART DB
+                        'id'      => $cart->id,
+                        'quantity'=> $cart->quantity,
+                        'size'    => $cart->size,
+                        'color'   => $cart->color,
+                        'product' => $cart->product,
+                    ];
+                });
+        }
+
+        // GUEST
+        else {
             $sessionCart = session()->get('cart', []);
-            $items = collect($sessionCart)->map(function ($item, $id) {
+
+            $items = collect($sessionCart)->map(function ($item) {
                 return (object)[
-                    'id' => $id,
-                    'quantity' => $item['quantity'],
+                    'row_id'  => $item['row_id'], // <= STRING ROW ID
+                    'id'      => $item['row_id'],
+                    'quantity'=> $item['quantity'],
+                    'size'    => $item['size'],
+                    'color'   => $item['color'],
                     'product' => (object)[
-                        'id' => $id,
-                        'name' => $item['name'],
-                        'price' => $item['price'],
-                        'main_image' => $item['image'],
-                        'category' => (object)[
+                        'id'        => $item['product_id'],
+                        'name'      => $item['name'],
+                        'price'     => $item['price'],
+                        'main_image'=> $item['image'],
+                        'category'  => (object)[
                             'name' => $item['category']
                         ]
                     ]
@@ -72,44 +115,64 @@ class CartController extends Controller
             });
         }
 
-        return view('cart.index', ['items' => $items]);
+        return view('cart.index', compact('items'));
     }
 
-    public function updateQuantity(Request $request, $id)
+
+    /**
+     * Update quantity
+     */
+    public function updateQuantity(Request $request, $rowId)
     {
-        $quantity = max(1, (int)$request->quantity);
+        $quantity = max(1, (int) $request->quantity);
 
+        // LOGIN
         if (Auth::check()) {
-            $cart = Cart::where('user_id', Auth::id())
-                ->where('product_id', $id)->first();
-
+            $cart = Cart::find($rowId);
             if ($cart) {
                 $cart->quantity = $quantity;
                 $cart->save();
+                return back()->with('success', 'Quantity diperbarui.');
             }
-        } else {
-            $cart = session()->get('cart', []);
-            if (isset($cart[$id])) {
-                $cart[$id]['quantity'] = $quantity;
-                session()->put('cart', $cart);
-            }
+            return back()->with('error', 'Cart tidak ditemukan.');
         }
 
-        return back();
+        // GUEST
+        $cart = session()->get('cart', []);
+        if (isset($cart[$rowId])) {
+            $cart[$rowId]['quantity'] = $quantity;
+            session()->put('cart', $cart);
+            return back()->with('success', 'Quantity diperbarui.');
+        }
+
+        return back()->with('error', 'Cart tidak ditemukan.');
     }
 
-    public function remove($id)
+
+
+    /**
+     * Hapus produk
+     */
+    public function remove($rowId)
     {
+        // LOGIN
         if (Auth::check()) {
-            Cart::where('user_id', Auth::id())
-                ->where('product_id', $id)
-                ->delete();
-        } else {
-            $cart = session()->get('cart', []);
-            unset($cart[$id]);
-            session()->put('cart', $cart);
+            $cart = Cart::find($rowId);
+            if ($cart) {
+                $cart->delete();
+                return back()->with('success', 'Produk dihapus.');
+            }
+            return back()->with('error', 'Cart tidak ditemukan.');
         }
 
-        return back()->with('success', 'Produk dihapus dari keranjang.');
+        // GUEST
+        $cart = session()->get('cart', []);
+        if (isset($cart[$rowId])) {
+            unset($cart[$rowId]);
+            session()->put('cart', $cart);
+            return back()->with('success', 'Produk dihapus.');
+        }
+
+        return back()->with('error', 'Cart tidak ditemukan.');
     }
 }

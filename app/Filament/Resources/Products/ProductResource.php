@@ -23,7 +23,7 @@ class ProductResource extends Resource
     protected static ?string $navigationLabel = 'Produk';
 
     protected static string | BackedEnum | null $navigationIcon = 'heroicon-o-cube';   
-    protected static string | UnitEnum | null $navigationGroup = 'Manajemen Produk';
+    protected static string | UnitEnum | null $navigationGroup = 'Manajemen Toko';
 
     protected static ?string $model = Product::class;
 

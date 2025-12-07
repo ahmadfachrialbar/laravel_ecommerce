@@ -120,6 +120,10 @@
 
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
 
+                        <!-- HIDDEN INPUT FOR SIZE & COLOR -->
+                        <input type="hidden" name="size" id="selected_size">
+                        <input type="hidden" name="color" id="selected_color">
+
                         <label class="block text-sm mb-2">Jumlah:</label>
                         <input type="number" name="quantity" value="1" min="1"
                             class="w-full border border-gray-300 rounded px-3 py-2">
@@ -129,6 +133,7 @@
                             Tambah ke Keranjang
                         </button>
                     </form>
+
 
 
                 </div>

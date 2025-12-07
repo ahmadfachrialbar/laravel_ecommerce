@@ -13,7 +13,7 @@ use Filament\Tables\Columns\ImageColumn;
 
 class ProductsTable
 {
-    
+
     public static function configure(Table $table): Table
     {
         return $table
@@ -24,7 +24,7 @@ class ProductsTable
                 TextColumn::make('price')->money('idr', true)->sortable(),
                 TextColumn::make('stock')->sortable(),
                 ImageColumn::make('main_image')->label('Gambar'),
-                TextColumn::make('created_at')->dateTime()->sortable(),
+                TextColumn::make('created_at')->dateTime()->sortable()->label('Dibuat'),
             ])
             ->filters([
                 //
@@ -32,7 +32,7 @@ class ProductsTable
             ->recordActions([
                 EditAction::make(),
                 DeleteAction::make(),
-                
+
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

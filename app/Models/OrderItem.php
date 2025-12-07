@@ -2,24 +2,35 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Models\Order;
-use App\Models\Product; 
+use Illuminate\Database\Eloquent\Model;
 
-class order_item extends Model
+class OrderItem extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'order_id', 'product_id', 'qty', 'size', 'color', 'price', 'subtotal'
+        'order_id',
+        'product_id',
+        'name',
+        'size',
+        'qty',
+        'color',
+        'price',
+        'subtotal',
     ];
 
+    /**
+     * Relasi ke order
+     */
     public function order()
     {
         return $this->belongsTo(Order::class);
     }
 
+    /**
+     * Relasi ke product
+     */
     public function product()
     {
         return $this->belongsTo(Product::class);

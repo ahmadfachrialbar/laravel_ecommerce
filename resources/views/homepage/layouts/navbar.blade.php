@@ -8,9 +8,9 @@
             <!-- Desktop Menu -->
             <div class="hidden md:flex items-center space-x-1">
                 <a href="/#hero" class="nav-link px-3 py-2 text-sm text-gray-600 hover:text-gray-900 rounded-md transition-colors">Beranda</a>
+                <a href="/#about" class="nav-link px-3 py-2 text-sm text-gray-600 hover:text-gray-900 rounded-md transition-colors">Tentang</a>
                 <a href="/#categories" class="nav-link px-3 py-2 text-sm text-gray-600 hover:text-gray-900 rounded-md transition-colors">Kategori</a>
                 <a href="/#featured-products" class="nav-link px-3 py-2 text-sm text-gray-600 hover:text-gray-900 rounded-md transition-colors">Produk</a>
-                <a href="/#about" class="nav-link px-3 py-2 text-sm text-gray-600 hover:text-gray-900 rounded-md transition-colors">Tentang</a>
                 <a href="/#location" class="nav-link px-3 py-2 text-sm text-gray-600 hover:text-gray-900 rounded-md transition-colors">Lokasi</a>
             </div>
 
@@ -70,9 +70,9 @@
 
             <!-- Menu umum -->
             <a href="/" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-colors">Beranda</a>
+            <a href="/#about" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-colors">Tentang</a>
             <a href="/#categories" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-colors">Kategori</a>
             <a href="/#featured-products" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-colors">Produk</a>
-            <a href="/#about" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-colors">Tentang</a>
             <a href="/#location" class="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-colors">Kontak</a>
 
             <!-- Divider -->
