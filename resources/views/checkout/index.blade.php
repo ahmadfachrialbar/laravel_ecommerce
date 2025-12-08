@@ -228,7 +228,7 @@
 
                             <div class="flex justify-between text-sm">
                                 <span class="text-gray-600">Ongkos Kirim</span>
-                                <span class="text-red-500">Belum dihitung</span>
+                                <span class="text-red-500">Akan di hitung setelah Buat Pesanan</span>
                             </div>
                         </div>
 

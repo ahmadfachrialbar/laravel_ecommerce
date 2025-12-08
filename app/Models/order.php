@@ -25,6 +25,8 @@ class Order extends Model
         'total',
         'shipping_status',
         'status',
+        'snap_token',
+        'payment_status',
     ];
 
     /**

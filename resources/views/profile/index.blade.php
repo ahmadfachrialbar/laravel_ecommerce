@@ -107,7 +107,9 @@
                         <p class="text-sm text-gray-500">ID Pesanan: <span class="font-medium">#{{ $order->id }}</span></p>
                         <p class="text-sm text-gray-500">Tanggal: <span class="font-medium">{{ $order->created_at->format('d F Y') }}</span></p>
                         <p class="text-sm text-gray-500">Total: <span class="font-medium text-green-700">Rp {{ number_format($order->total) }}</span></p>
-                        <p class="text-sm text-gray-500">Status: <span class="font-medium">{{ ucfirst($order->status) }}</span></p>
+                        <p class="text-sm text-gray-500">Status Pembayaran:<span class="font-medium {{ $order->payment_status === 'paid' ? 'text-green-700' : ($order->payment_status === 'pending' ? 'text-yellow-600' : 'text-red-600') }}">{{ ucfirst($order->payment_status ?? 'unpaid') }}</span></p>
+                        <p class="text-sm text-gray-500">Status Pengiriman: <span class="font-medium">{{ ucfirst($order->shipping_status) }}</span></p>
+                        <p class="text-sm text-gray-500">Status Pesanan: <span class="font-medium">{{ ucfirst($order->status) }}</span></p>
                     </div>
                     <div>
                         <a href="{{ url('/checkout/confirm/' . $order->id) }}"

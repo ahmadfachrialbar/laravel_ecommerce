@@ -33,6 +33,15 @@ class OrdersTable
                     ->options(ShippingStatus::class)
                     ->sortable(),
 
+                SelectColumn::make('payment_status')
+                    ->label('Status Pembayaran')
+                    ->options([
+                        'pending' => 'Pending',
+                        'paid' => 'Paid',
+                        'failed' => 'Failed',
+                    ])
+                    ->sortable(),
+
                 SelectColumn::make('status')
                     ->label('Status Pesanan')
                     ->options(OrderStatus::class)

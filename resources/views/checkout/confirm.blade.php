@@ -201,9 +201,18 @@
 
                     <div class="bg-gray-50 border border-gray-200 p-4 mb-6 rounded-xl">
                         <p class="text-center text-xs text-gray-600">
-                            <span class="font-medium">Status Pembayaran :</span> Menunggu Pembayaran
+                            <span class="font-medium">Status Pembayaran :</span>
+
+                            @if($order->payment_status === 'paid')
+                            <span class="text-green-600 font-medium">Terbayar</span>
+                            @elseif($order->payment_status === 'pending')
+                            <span class="text-yellow-600 font-medium">Menunggu Pembayaran</span>
+                            @else
+                            <span class="text-red-600 font-medium">Belum Dibayar</span>
+                            @endif
                         </p>
                     </div>
+
 
 
                 </div>
@@ -263,9 +272,22 @@
                         </div>
 
                         <!-- Info Box -->
-                        <a href="" class="block w-full bg-gray-900 text-white py-4 text-sm font-medium text-center hover:bg-gray-800 transition mb-3 rounded-xl">
+                        <!-- Tombol Bayar -->
+                        @if($order->payment_status === 'paid')
+                        <div class="w-full bg-green-600 text-white py-3 text-sm rounded-xl text-center mb-4">
+                            ✔ Pembayaran Berhasil
+                        </div>
+                        @else
+                        <!-- id nya sesuai script di bawah "pay-button" -->
+                        <button id="pay-button" 
+                            class="w-full bg-gray-900 text-white py-3 text-sm rounded-xl hover:bg-gray-800 transition mb-4">
                             Bayar Sekarang
-                        </a>
+                        </button>
+                        @endif
+
+                        <!-- Tempat nampung response Midtrans (opsional) -->
+                        <pre id="result-json" class="mt-4 p-3 bg-gray-100 text-sm rounded hidden"></pre>
+
 
                         <a href="/" class="block w-full border border-gray-200 py-3 text-sm text-center hover:border-gray-400 transition rounded-xl">
                             Kembali ke Beranda
@@ -278,5 +300,30 @@
     </main>
 
 </body>
+
+<!-- Midtrans Snap.js -->
+<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
+<script type="text/javascript">
+    document.getElementById('pay-button').onclick = function() {
+        // SnapToken acquired from previous step
+        snap.pay('{{ $order->snap_token }}', {
+            // Optional
+            onSuccess: function(result) {
+                window.location.href = "{{ route('payment.success', ['order_id' => $order->id]) }}";
+            },
+            // Optional
+            onPending: function(result) {
+                /* You may add your own js here, this is just example */
+                document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+            },
+            // Optional
+            onError: function(result) {
+                /* You may add your own js here, this is just example */
+                document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+            }
+        });
+    };
+</script>
+
 
 </html>

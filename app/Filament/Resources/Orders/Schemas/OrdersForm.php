@@ -48,6 +48,14 @@ class OrdersForm
                             ->label('Status Pengiriman')
                             ->options(ShippingStatus::class)
                             ->required(),
+                        Select::make('payment_status')
+                            ->label('Status Pembayaran')
+                            ->options([
+                                'pending' => 'Pending',
+                                'paid' => 'Paid',
+                                'failed' => 'Failed',
+                            ])
+                            ->required(),
 
                         Select::make('status')
                             ->label('Status Pesanan')

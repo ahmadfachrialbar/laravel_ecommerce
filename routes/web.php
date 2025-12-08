@@ -55,6 +55,13 @@ Route::middleware(\App\Http\Middleware\CustomerOnly::class)->group(function () {
         Route::get('/checkout/confirm/{id}', [CheckoutController::class, 'confirm'])
             ->name('checkout.confirm');
 
+        Route::get('/payment/success/{order_id}', [CheckoutController::class, 'success'])
+            ->name('payment.success');
+
+
+
+
+
 
 
         // Profile
