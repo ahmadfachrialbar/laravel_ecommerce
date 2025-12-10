@@ -86,66 +86,66 @@
                         @csrf
 
                         <!-- Informasi Pengiriman -->
-                        <div class="bg-white p-6 md:p-8 border border-gray-200 mb-6">
+                        <div class="bg-white p-6 md:p-8 border border-gray-200 mb-6 rounded-xl">
                             <h2 class="text-lg font-medium mb-6">Informasi Pengiriman</h2>
 
-                            <div class="space-y-4">
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="space-y-4 ">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 ">
                                     <div>
                                         <label class="block text-sm text-gray-600 mb-2">Nama Depan</label>
-                                        <input type="text" name="first_name" value="{{ old('first_name') }}" placeholder="Ahmad" class="w-full px-4 py-3 border border-gray-200 text-sm focus:outline-none focus:border-gray-400" required />
+                                        <input type="text" name="first_name" value="{{ old('first_name') }}" placeholder="Ahmad" class="w-full px-4 py-3 border border-gray-200 text-sm focus:outline-none focus:border-gray-400 rounded-xl" required />
                                     </div>
                                     <div>
                                         <label class="block text-sm text-gray-600 mb-2">Nama Belakang</label>
-                                        <input type="text" name="last_name" value="{{ old('last_name') }}" placeholder="Santoso" class="w-full px-4 py-3 border border-gray-200 text-sm focus:outline-none focus:border-gray-400" required />
+                                        <input type="text" name="last_name" value="{{ old('last_name') }}" placeholder="Santoso" class="w-full px-4 py-3 border border-gray-200 text-sm focus:outline-none focus:border-gray-400 rounded-xl" required />
                                     </div>
                                 </div>
 
                                 <div>
                                     <label class="block text-sm text-gray-600 mb-2">Email</label>
-                                    <input type="email" name="email" value="{{ old('email') }}" placeholder="email@example.com" class="w-full px-4 py-3 border border-gray-200 text-sm focus:outline-none focus:border-gray-400" required />
+                                    <input type="email" name="email" value="{{ old('email') }}" placeholder="email@example.com" class="w-full px-4 py-3 border border-gray-200 text-sm focus:outline-none focus:border-gray-400 rounded-xl" required />
                                 </div>
 
                                 <div>
                                     <label class="block text-sm text-gray-600 mb-2">Nomor Telepon</label>
-                                    <input type="tel" name="phone" value="{{ old('phone') }}" placeholder="08xx-xxxx-xxxx" class="w-full px-4 py-3 border border-gray-200 text-sm focus:outline-none focus:border-gray-400" required />
+                                    <input type="tel" name="phone" value="{{ old('phone') }}" placeholder="08xx-xxxx-xxxx" class="w-full px-4 py-3 border border-gray-200 text-sm focus:outline-none focus:border-gray-400 rounded-xl" required />
                                 </div>
 
                                 <div>
                                     <label class="block text-sm text-gray-600 mb-2">Alamat Lengkap</label>
-                                    <textarea name="address" rows="3" placeholder="Jl. Nama Jalan No. XX" class="w-full px-4 py-3 border border-gray-200 text-sm focus:outline-none focus:border-gray-400 resize-none" required>{{ old('address') }}</textarea>
+                                    <textarea name="address" rows="3" placeholder="Jl. Nama Jalan No. XX" class="w-full px-4 py-3 border border-gray-200 text-sm focus:outline-none focus:border-gray-400 resize-none rounded-xl" required>{{ old('address') }}</textarea>
                                 </div>
 
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                     <div>
                                         <label class="block text-sm text-gray-600 mb-2">Kota</label>
-                                        <input type="text" name="city" value="{{ old('city') }}" placeholder="Purwokerto" class="w-full px-4 py-3 border border-gray-200 text-sm focus:outline-none focus:border-gray-400" required />
+                                        <input type="text" name="city" value="{{ old('city') }}" placeholder="Purwokerto" class="w-full px-4 py-3 border border-gray-200 text-sm focus:outline-none focus:border-gray-400 rounded-xl" required />
                                     </div>
                                     <div>
                                         <label class="block text-sm text-gray-600 mb-2">Provinsi</label>
-                                        <input type="text" name="province" value="{{ old('province') }}" placeholder="Jawa Tengah" class="w-full px-4 py-3 border border-gray-200 text-sm focus:outline-none focus:border-gray-400" required />
+                                        <input type="text" name="province" value="{{ old('province') }}" placeholder="Jawa Tengah" class="w-full px-4 py-3 border border-gray-200 text-sm focus:outline-none focus:border-gray-400 rounded-xl" required />
                                     </div>
                                     <div>
                                         <label class="block text-sm text-gray-600 mb-2">Kode Pos</label>
-                                        <input type="text" name="postal_code" value="{{ old('postal_code') }}" placeholder="53116" class="w-full px-4 py-3 border border-gray-200 text-sm focus:outline-none focus:border-gray-400" required />
+                                        <input type="text" name="postal_code" value="{{ old('postal_code') }}" placeholder="53116" class="w-full px-4 py-3 border border-gray-200 text-sm focus:outline-none focus:border-gray-400 rounded-xl" required />
                                     </div>
                                 </div>
 
                                 <div>
                                     <label class="block text-sm text-gray-600 mb-2">Catatan Pesanan (Opsional)</label>
-                                    <textarea name="notes" rows="2" placeholder="Catatan untuk kurir atau penjual" class="w-full px-4 py-3 border border-gray-200 text-sm focus:outline-none focus:border-gray-400 resize-none">{{ old('notes') }}</textarea>
+                                    <textarea name="notes" rows="2" placeholder="Catatan untuk kurir atau penjual" class="w-full px-4 py-3 border border-gray-200 text-sm focus:outline-none focus:border-gray-400 resize-none rounded-xl">{{ old('notes') }}</textarea>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Metode Pengiriman -->
-                        <div class="bg-white p-6 md:p-8 border border-gray-200 mb-6">
+                        <div class="bg-white p-6 md:p-8 border border-gray-200 mb-6 rounded-xl">
                             <h2 class="text-lg font-medium mb-6">Metode Pengiriman</h2>
 
                             <div class="space-y-3">
                                 @foreach($shippingCosts as $cost)
-                                <label class="flex items-center justify-between p-4 border border-gray-200 cursor-pointer hover:border-gray-400 transition">
-                                    <div class="flex items-center gap-3">
+                                <label class="flex items-center justify-between p-4 border border-gray-200 cursor-pointer hover:border-gray-400 transition rounded-xl">
+                                    <div class="flex items-center gap-3 ">
                                         <input type="radio"
                                             name="shipping_id"
                                             value="{{ $cost->id }}"
@@ -167,11 +167,11 @@
                         </div>
 
 
-                        <button type="submit" class="w-full bg-gray-900 text-white py-4 text-sm font-medium hover:bg-gray-800 transition mb-3">
+                        <button type="submit" class="w-full bg-gray-900 text-white py-4 text-sm font-medium hover:bg-gray-800 transition mb-3 rounded-xl">
                             Buat Pesanan
                         </button>
 
-                        <a href="/cart" class="block w-full border border-gray-200 py-3 text-sm text-center hover:border-gray-400 transition">
+                        <a href="/cart" class="block w-full border border-gray-200 py-3 text-sm text-center hover:border-gray-400 transition rounded-xl">
                             Kembali ke Keranjang
                         </a>
 
@@ -180,21 +180,21 @@
 
                 <!-- Right Column - Order Summary -->
                 <div class="lg:col-span-5">
-                    <div class="bg-white p-6 md:p-8 border border-gray-200 sticky top-24">
+                    <div class="bg-white p-6 md:p-8 border border-gray-200 sticky top-24 rounded-xl">
                         <h2 class="text-lg font-medium mb-6">Ringkasan Pesanan</h2>
 
                         <!-- Products -->
                         <div class="space-y-4 mb-6 pb-6 border-b border-gray-200">
                             @forelse($cart as $item)
                             <div class="flex gap-4">
-                                <div class="w-20 h-20 bg-gray-100 flex-shrink-0">
+                                <div class="w-20 h-20 bg-gray-100 flex-shrink-0 ">
                                     <img src="{{ $item->product->main_image ? Storage::url($item->product->main_image) : 'https://via.placeholder.com/150' }}"
-                                        class="w-full h-full object-cover">
+                                        class="w-full h-full object-cover rounded-xl">
                                 </div>
 
                                 <div class="flex-1">
                                     <h3 class="text-sm font-medium mb-1">{{ $item->product->name }}</h3>
-                                    <p class="text-xs text-gray-500 mb-2">
+                                    <p class="text-xs text-gray-500 mb-2 ">
                                         Uk: {{ $item->size }} · Warna: {{ $item->color }} · Jumlah: {{ $item->quantity }}
                                     </p>
                                     <p class="text-sm font-medium">

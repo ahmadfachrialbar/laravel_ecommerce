@@ -116,7 +116,7 @@
 
             <!-- Success Message -->
             <div class="mb-8">
-                <div class="bg-white border border-gray-200 p-8 md:p-12 text-center">
+                <div class="bg-white border border-gray-200 p-8 md:p-12 text-center rounded-xl">
                     <div class="mb-6">
                         <svg class="w-20 h-20 mx-auto checkmark-circle" viewBox="0 0 52 52">
                             <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none" stroke="#111827" stroke-width="2" />
@@ -130,7 +130,7 @@
             </div>
 
             <!-- Detail Pesanan -->
-            <div class="bg-white p-6 md:p-8 border border-gray-200 mb-6">
+            <div class="bg-white p-6 md:p-8 border border-gray-200 mb-6 rounded-xl">
                 <h2 class="text-lg font-medium mb-6">Detail Pesanan</h2>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
@@ -175,7 +175,7 @@
             </div>
 
             <!-- Detail Produk -->
-            <div class="bg-white p-6 md:p-8 border border-gray-200 mb-6">
+            <div class="bg-white p-6 md:p-8 border border-gray-200 mb-6 rounded-xl">
                 <h2 class="text-lg font-medium mb-6">Produk yang Dipesan</h2>
 
                 <div class="space-y-4">
@@ -194,7 +194,7 @@
             </div>
 
             <!-- Total Pembayaran -->
-            <div class="bg-white p-6 md:p-8 border border-gray-200 mb-6">
+            <div class="bg-white p-6 md:p-8 border border-gray-200 mb-6 rounded-xl">
                 <div class="flex justify-between items-center">
                     <span class="text-lg font-medium">Total Pembayaran</span>
                     <span class="text-2xl font-medium">Rp {{ number_format($order->total, 0, ',', '.') }}</span>
@@ -203,7 +203,7 @@
             </div>
 
             <!-- Success Info Box -->
-            <div class="bg-green-50 border border-green-200 p-6 mb-6">
+            <div class="bg-green-50 border border-green-200 p-6 mb-6 rounded-xl">
                 <div class="flex items-start gap-3">
                     <svg class="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -217,11 +217,11 @@
 
             <!-- Action Buttons -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <a href="/" class="block w-full bg-gray-900 text-white py-4 text-sm font-medium text-center hover:bg-gray-800 transition">
+                <a href="/" class="block w-full bg-gray-900 text-white py-4 text-sm font-medium text-center hover:bg-gray-800 transition rounded-xl">
                     Kembali ke Beranda
                 </a>
 
-                <a href="/profile" class="block w-full border border-gray-200 py-4 text-sm text-center hover:border-gray-400 transition">
+                <a href="/profile" class="block w-full border border-gray-200 py-4 text-sm text-center hover:border-gray-400 transition rounded-xl">
                     Lihat Pesanan Saya
                 </a>
             </div>
@@ -230,12 +230,12 @@
     </main>
 
     <!-- Footer Info -->
-    <div class="max-w-4xl mx-auto px-6 lg:px-8 pb-12">
-        <div class="bg-white border border-gray-200 p-6 text-center">
+    <div class="max-w-4xl mx-auto px-6 lg:px-8 pb-12 ">
+        <div class="bg-white border border-gray-200 p-6 text-center rounded-xl">
             <p class="text-sm text-gray-600 mb-3">Butuh bantuan dengan pesanan Anda?</p>
             <div class="flex items-center justify-center gap-6 text-sm">
                 <span class="text-gray-400"></span>
-                <a href="https://wa.me/6281234567890" class="text-gray-900 font-medium hover:underline">WhatsApp Support</a>
+                <a href="https://wa.me/6285959628181" class="text-gray-900 font-medium hover:underline">WhatsApp Support</a>
             </div>
         </div>
     </div>

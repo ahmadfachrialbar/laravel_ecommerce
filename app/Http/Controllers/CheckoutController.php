@@ -46,6 +46,7 @@ class CheckoutController extends Controller
     // =====================================================
     public function store(Request $request)
     {
+
         $request->validate([
             'first_name' => 'required',
             'last_name'  => 'required',
@@ -163,6 +164,7 @@ class CheckoutController extends Controller
         try {
             $snapToken = Snap::getSnapToken($transactionData);
 
+            //dd($snapToken);
             $order->update([
                 'snap_token'   => $snapToken,
                 'payment_status' => 'pending'
@@ -238,7 +240,7 @@ class CheckoutController extends Controller
             ->where('id', $order_id)
             ->firstOrFail();
 
-        // Update status pembayaran & status order
+        // Update status pembayaran & status order di db
         $order->update([
             'shipping_status' => 'packed',
             'payment_status' => 'paid',
