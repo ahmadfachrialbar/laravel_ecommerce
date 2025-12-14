@@ -1,61 +1,125 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <h1 align="center">Fashion Icon Purwokerto</h1>
+  <p align="center">E-Commerce Platform untuk Fashion Terlengkap di Purwokerto</p>
 </p>
 
-## About Laravel
+<p align="center">
+<a href="#"><img src="https://img.shields.io/badge/Laravel-11.x-FF2D20?style=for-the-badge&logo=laravel" alt="Laravel Version"></a>
+<a href="#"><img src="https://img.shields.io/badge/TailwindCSS-3.x-38B2AC?style=for-the-badge&logo=tailwind-css" alt="Tailwind CSS"></a>
+<a href="#"><img src="https://img.shields.io/badge/Filament-3.x-FDAE4B?style=for-the-badge" alt="Filament"></a>
+<a href="#"><img src="https://img.shields.io/badge/Midtrans-Payment-00A8E1?style=for-the-badge" alt="Midtrans"></a>
+</p>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Tentang Fashion Icon Purwokerto
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Fashion Icon Purwokerto adalah platform e-commerce modern yang menyediakan berbagai koleksi fashion terlengkap di Purwokerto. Website ini dibangun dengan teknologi terkini untuk memberikan pengalaman berbelanja online yang mudah, cepat, dan aman.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Teknologi yang Digunakan
 
-## Learning Laravel
+- **[Laravel](https://laravel.com)** - Framework PHP untuk backend yang robust dan scalable
+- **[Blade Templates](https://laravel.com/docs/blade)** - Template engine untuk tampilan yang dinamis
+- **[Tailwind CSS](https://tailwindcss.com)** - Framework CSS utility-first untuk desain responsif
+- **[Filament](https://filamentphp.com)** - Admin panel yang powerful dan elegant
+- **[Midtrans](https://midtrans.com)** - Payment gateway untuk transaksi yang aman
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Fitur Utama
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Untuk Customer
+- **Katalog Produk** - Jelajahi berbagai koleksi fashion dengan tampilan yang menarik dan informatif
+- **Keranjang Belanja** - Tambahkan produk favorit ke keranjang dengan mudah
+- **Checkout Process** - Proses pemesanan yang simpel dan user-friendly
+- **Payment Gateway** - Integrasi dengan Midtrans untuk berbagai metode pembayaran (Transfer Bank, E-Wallet, Kartu Kredit, dll)
+- **Riwayat Pesanan** - Lacak status pesanan Anda secara real-time
+- **Profil Pelanggan** - Kelola informasi dan alamat pengiriman
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Untuk Admin
+- **Dashboard Filament** - Panel administrasi yang modern dan intuitif
+- **Manajemen Produk** - Kelola katalog produk, stok, harga, dan kategori
+- **Manajemen Pesanan** - Monitor dan update status pesanan pelanggan
+- **Manajemen Pelanggan** - Kelola data dan aktivitas pelanggan
+- **Manajemen Ongkos kirim** - Kelola data dan Ongkos Kirim
 
-## Laravel Sponsors
+## Sistem Role
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Website ini mengimplementasikan sistem role-based access control (RBAC):
 
-### Premium Partners
+| Role | Akses | Deskripsi |
+|------|-------|-----------|
+| **Customer** | Frontend | Dapat melihat produk, berbelanja, dan mengelola pesanan mereka |
+| **Admin** | Filament Dashboard | Memiliki akses penuh untuk mengelola seluruh sistem e-commerce |
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## Instalasi
 
-## Contributing
+### Persyaratan Sistem
+- PHP >= 8.2
+- Composer
+- MySQL 
+- Web Server
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Langkah Instalasi
 
-## Code of Conduct
+1. Clone repository
+```bash
+git clone https://github.com/ahmadfachrialbar/laravel_ecommerce.git
+cd laravel_ecommerce
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+2. Install dependencies
+```bash
+composer install
+```
 
-## Security Vulnerabilities
+3. Konfigurasi environment
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+4. Setup database di file `.env`
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=namadatabase
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-## License
+5. Konfigurasi Midtrans di file `.env`
+```env
+MIDTRANS_SERVER_KEY=your_server_key
+MIDTRANS_CLIENT_KEY=your_client_key
+MIDTRANS_IS_PRODUCTION=false
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+6. Jalankan migrasi dan seeder
+```bash
+php artisan migrate --seed
+```
+
+7. Jalankan aplikasi
+```bash
+php artisan serve
+```
+
+Website dapat diakses di `http://localhost:8000`
+
+## Akses Admin Panel
+
+Admin panel menggunakan Filament dan dapat diakses melalui:
+- URL: `http://localhost:8000/admin`
+- Default credentials akan dibuat saat seeding database
+- email : admin@fip.com
+- pass : adminfip
+
+## Konfigurasi Payment Gateway
+
+Untuk mengaktifkan Midtrans payment gateway:
+
+1. Daftar di [Midtrans](https://midtrans.com)
+2. Dapatkan Server Key dan Client Key dari dashboard Midtrans
+3. Masukkan kredensial ke file `.env`
+4. Test mode: gunakan [kartu test Midtrans](https://docs.midtrans.com/docs/testing-payment)
+```
+
+<p align="center">Made with ❤️ in Purwokerto</p>
