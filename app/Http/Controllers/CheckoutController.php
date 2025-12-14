@@ -247,6 +247,14 @@ class CheckoutController extends Controller
             'status' => 'process',
         ]);
 
+        // Kurangi stock produk
+        foreach ($order->items as $item) {
+            $product = Product::find($item->product_id);
+            if ($product) {
+                $product->decrement('stock', $item->qty);
+            }
+        }
+
         return view('checkout.success', compact('order'));
     }
 }
