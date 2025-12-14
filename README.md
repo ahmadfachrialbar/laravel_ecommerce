@@ -60,7 +60,7 @@ Website ini mengimplementasikan sistem role-based access control (RBAC):
 
 1. Clone repository
 ```bash
-git clone https://github.com/ahmadfachrialbar/laravel_ecommerce.git
+git clone https://github.com/namagithub/laravel_ecommerce.git
 cd laravel_ecommerce
 ```
 
